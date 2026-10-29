@@ -2,5 +2,8 @@
   "name": "mac-check",
   "private": true,
   "type": "module",
-  "scripts": { "test": "node --test tests/report.test.mjs", "preview": "node scripts/preview.mjs" }
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "preview": "node scripts/preview.mjs"
+  }
 }

@@ -13,7 +13,22 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  macos-smoke:
+    name: Test downloadable collector on macOS
+    runs-on: macos-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - name: Run unit tests and the complete macOS shell wrapper
+        run: npm test
+
   deploy:
+    needs: macos-smoke
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:

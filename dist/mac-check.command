@@ -21,7 +21,7 @@ fi
 printf '\nMac Check reads hardware, storage and local enrollment status.\nIt does not change your Mac or send information anywhere.\nThe report contains only the last four characters of your serial.\n\nCollecting the report; system information may take a minute…\n'
 MACCHECK_TMP="$(/usr/bin/mktemp -t mac-check)"
 trap '/bin/rm -f "$MACCHECK_TMP"' EXIT HUP INT TERM
-/usr/bin/osascript -l JavaScript /dev/stdin "$MACCHECK_CODE" <<'MACCHECK_JXA' > "$MACCHECK_TMP"
+/usr/bin/osascript -l JavaScript - "$MACCHECK_CODE" <<'MACCHECK_JXA' > "$MACCHECK_TMP"
 function run(argv) {
   var app=Application.currentApplication();
   app.includeStandardAdditions=true;
@@ -51,8 +51,16 @@ function run(argv) {
   return JSON.stringify({schema:'mac-check/v1',evidence:'Seller-generated local report; not independently attested.',collectedAt:new Date().toISOString(),challenge:String(argv[0] || '').toUpperCase(),hardware:{model:String(h.machine_name || ''),modelIdentifier:String(h.machine_model || ''),chip:String(h.chip_type || h.cpu_type || ''),memoryGB:memoryGB,serialEnding:/[a-zA-Z0-9]{4}$/.test(serial) ? serial.slice(-4).toUpperCase() : ''},macOS:command('/usr/bin/sw_vers -productVersion','os_version_failed'),activationLock:activationState,enrollment:{automated:enrollment(enrolled,'Enrolled via DEP'),mdm:enrollment(enrolled,'MDM enrollment')},storage:storage,queryErrors:errors},null,2);
 }
 MACCHECK_JXA
-MACCHECK_OUTPUT_DIR="$HOME/Downloads"
-if [[ ! -d "$MACCHECK_OUTPUT_DIR" ]]; then MACCHECK_OUTPUT_DIR="$HOME"; fi
+if [[ -n "${MACCHECK_OUTPUT_DIR:-}" ]]; then
+  if [[ ! -d "$MACCHECK_OUTPUT_DIR" ]]; then
+    print -u2 'MACCHECK_OUTPUT_DIR must name an existing directory.'
+    exit 1
+  fi
+elif [[ -d "$HOME/Downloads" ]]; then
+  MACCHECK_OUTPUT_DIR="$HOME/Downloads"
+else
+  MACCHECK_OUTPUT_DIR="$HOME"
+fi
 MACCHECK_STAMP="$(/bin/date -u +%Y%m%dT%H%M%SZ)"
 MACCHECK_SUFFIX="${MACCHECK_TMP##*.}"
 MACCHECK_OUTPUT="$MACCHECK_OUTPUT_DIR/mac-check-report-$MACCHECK_STAMP-$MACCHECK_SUFFIX.json"

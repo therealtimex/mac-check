@@ -18,7 +18,9 @@ Download `dist/mac-check.command`, inspect it, and run `zsh ~/Downloads/mac-chec
 
 Reports are seller generated and can be edited. Matching codes and serial endings help correlate a conversation; they are not cryptographic hardware attestation. A local enrollment result does not establish organization release or absence of a bypass. Missing/failed Activation Lock or enrollment queries remain unknown. No report establishes successful post-erase online setup. The page does not issue a certified/pass badge.
 
-Tests execute the collector's actual embedded JavaScript against synthetic command outputs, covering query failures, privacy filtering, enrollment and lock states, physical SSD handling, import normalization and report freshness. This avoids reading private information from the buyer's development Mac. A real seller-device run and erase/setup validation remain separate acceptance checks.
+Unit tests execute the collector's actual embedded JavaScript against synthetic command outputs, covering query failures, privacy filtering, enrollment and lock states, physical SSD handling, import normalization and report freshness. On macOS, an additional end-to-end test runs the complete downloadable zsh script and verifies its saved JSON, check code and private file permissions. It uses a temporary output directory and removes the generated report without uploading it. The end-to-end test is skipped on other platforms; GitHub Pages deployment also requires the macOS job to pass. A real seller-device run and erase/setup validation remain separate acceptance checks.
+
+The collector saves to Downloads by default. For local automation, `MACCHECK_OUTPUT_DIR` may specify an existing output directory; no system environment variables need to be changed.
 
 ## GitHub Pages
 
