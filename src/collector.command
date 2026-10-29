@@ -11,6 +11,11 @@ if [[ "$(/usr/bin/uname -s)" != "Darwin" ]]; then
   print -u2 'Mac Check runs on macOS only.'
   exit 1
 fi
+MACCHECK_EXPLICIT_RUN=0
+if [[ "${1:-}" == "--run" ]]; then
+  MACCHECK_EXPLICIT_RUN=1
+  shift
+fi
 MACCHECK_CODE="${1:-}"
 if [[ -z "$MACCHECK_CODE" ]]; then
   MACCHECK_CODE="MC-$(/usr/bin/uuidgen | /usr/bin/cut -c1-8)"
@@ -20,7 +25,7 @@ if [[ ! "$MACCHECK_CODE" =~ '^[A-Za-z0-9-]{4,40}$' ]]; then
   exit 1
 fi
 printf '\nMac Check\nReads specs and enrollment. No password, changes or uploads.\nOnly the last four serial characters appear.\n'
-if [[ -t 0 ]]; then
+if [[ -t 0 && "$MACCHECK_EXPLICIT_RUN" != "1" ]]; then
   printf '\nPress Return to check this Mac, or Control-C to cancel: '
   read -r MACCHECK_CONFIRM
 fi

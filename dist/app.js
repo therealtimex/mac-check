@@ -1,8 +1,20 @@
 import { MAX_REPORT_BYTES, normalizeReport } from './report.js';
 import { renderReportDocument } from './report-page.js';
 const $=id=>document.getElementById(id);
-$('download').addEventListener('click',()=>{$('next').hidden=false;});
-$('copy-command').addEventListener('click',async()=>{try{await navigator.clipboard.writeText("zsh ~/Downloads/'Mac Check.command'");$('copy-status').textContent='Copied. Paste it in Terminal and press Return.';}catch{$('copy-status').textContent='Select and copy the command above.';}});
+const command=$('run-command');
+$('download').addEventListener('click',()=>{
+  $('next').classList.add('downloaded');
+  $('copy-status').textContent='Download started. When it finishes, copy this command and run it in Terminal.';
+});
+$('copy-command').addEventListener('click',async()=>{
+  try {
+    await navigator.clipboard.writeText(command.value);
+    $('copy-status').textContent='Copied. Paste in Terminal and press Return.';
+  } catch {
+    command.focus();command.select();command.setSelectionRange(0,command.value.length);
+    $('copy-status').textContent='Command selected. Press ⌘C to copy, then paste in Terminal.';
+  }
+});
 let reportURL=null;
 $('legacy-file').addEventListener('change',async event=>{
   $('legacy-open').hidden=true;$('legacy-status').textContent='';
