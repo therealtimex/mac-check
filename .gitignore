@@ -1,0 +1,11 @@
+node_modules/
+.sites-runtime/
+.sites-checkout/
+.openai/
+.DS_Store
+.env
+.env.*
+*.tar.gz
+*.log
+mac-check-report-*.json
+mac-check-reviewed-*.json
