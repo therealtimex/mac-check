@@ -1,39 +1,25 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A simple, seller-run Mac report. Check specifications and reported enrollment, review locally, then choose what to share.">
-  <meta name="referrer" content="no-referrer">
-  <title>Mac Check — Know the Mac before the meetup</title>
-  <link rel="stylesheet" href="styles.css">
-  <script type="module" src="app.js"></script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer">
+<title>Mac Check — Run it. Share a screenshot.</title>
+<meta name="description" content="Download, open, press Return. Mac Check opens a local report ready to screenshot and share.">
+<link rel="stylesheet" href="styles.css?v=quick-2"><script type="module" src="app.js?v=quick-2"></script>
 </head>
 <body>
-  <header class="shell topbar"><a class="brand" href="./"><span class="brand-icon" aria-hidden="true">M<span>✓</span></span> Mac Check</a><span class="privacy"><span class="dot"></span> Reports stay on your device</span></header>
-  <main class="shell">
-    <section class="hero">
-      <div><p class="eyebrow">BEFORE THE HANDOVER</p><h1>Know the Mac.<br><span>Keep the meetup simple.</span></h1><p class="intro">A clear report of the specs and enrollment status this Mac reports. Run a small local check, review the result, and share it with your buyer.</p><div class="hero-notes"><span>✓ No installation</span><span>✓ No admin password</span><span>✓ No automatic upload</span></div></div>
-      <aside class="summary-card"><div class="mini-mac" aria-hidden="true"><span></span><i></i></div><p class="eyebrow">ONE REPORT, THE ESSENTIALS</p><div class="summary-row"><span>Hardware</span><strong>Chip · memory · storage</strong></div><div class="summary-row"><span>Ownership checks</span><strong>Reported lock & enrollment</strong></div><div class="summary-row"><span>Device match</span><strong>Serial ending · check code</strong></div><p class="subtle">A useful snapshot. A seller-generated report is not independent certification.</p></aside>
-    </section>
-    <section class="workflow" aria-labelledby="workflow-title">
-      <div class="section-title"><div><p class="eyebrow">THREE SMALL STEPS</p><h2 id="workflow-title">From this Mac to a clear report.</h2></div><button type="button" class="text-button" id="demo">Explore a sample report ↗</button></div>
-      <div class="steps">
-        <article class="step"><div class="step-number">01</div><h3>Run the local check</h3><p>Download the readable script on the Mac being sold. It reads system information and writes one JSON report to Downloads.</p><a class="button primary" href="mac-check.command?v=20261029-stdin" download="mac-check.command">Download Mac Check <span>↓</span></a><div class="code-label"><label for="challenge">Check code <span>(buyer can send their code)</span></label><div class="challenge-row"><input id="challenge" autocomplete="off" spellcheck="false" maxlength="40" aria-describedby="challenge-help"><button type="button" id="new-code" aria-label="Generate a new check code">↻</button></div></div><p id="challenge-help" class="subtle">The buyer compares this code with the report. It is a matching aid, not proof of authenticity.</p><p class="small-label">After downloading, open Terminal and run:</p><div class="command-box"><code id="command"></code><button type="button" id="copy">Copy</button></div><p class="subtle" id="copy-status" role="status"></p><p class="subtle">Updating an older download? Replace the previous <code>mac-check.command</code> in Downloads before running it.</p><details><summary>See exactly what the script does</summary><p>Reads hardware information, macOS version, physical internal storage and the local enrollment status. No sudo, account sign-in, installation, erasure, network requests or profile changes. It saves only the serial’s last four characters; it does not collect your name, Apple Account, files, hardware UUID or browsing history.</p><a href="mac-check.command?v=20261029-stdin" target="_blank" rel="noopener">Read the full script ↗</a></details></article>
-        <article class="step"><div class="step-number">02</div><h3>Review your report</h3><p>Choose the report the script saved. Everything is read in this browser. Nothing is sent to a server.</p><label class="drop-zone" for="report-file"><span class="file-icon" aria-hidden="true">↥</span><strong>Choose your JSON report</strong><span>or drag it here · up to 1 MB</span><input type="file" id="report-file" accept=".json,application/json"></label><p class="subtle">Look for a file named <code>mac-check-report-….json</code> in Downloads.</p><div id="file-error" class="error" role="alert" hidden></div><div class="review-placeholder"><span aria-hidden="true">◎</span><p>Your report appears below.<br>Review it before choosing to share.</p></div></article>
-        <article class="step"><div class="step-number">03</div><h3>Share on your terms</h3><p>Download a reviewed copy and send it in your existing seller conversation. There is no public report page or account to create.</p><div class="share-note"><strong>You choose what leaves this device.</strong><p>The export includes the model, specs, reported lock/enrollment, serial ending, collection time and check code. It includes no full serial number.</p></div><button type="button" class="button secondary" id="export" disabled>Download reviewed report <span>↓</span></button><p class="subtle" id="export-status" role="status">Load a real report to enable export.</p><p class="evidence-note">Even a clear report cannot prove ownership, rule out a bypass, or guarantee future enrollment. Agree on any reset, online activation and physical checks separately.</p></article>
-      </div>
-    </section>
-    <section id="report" class="report" aria-labelledby="report-title" hidden>
-      <div class="section-title"><div><p class="eyebrow" id="report-kind">LOCAL REPORT</p><h2 id="report-title">Your Mac, at a glance.</h2></div><span id="report-badge" class="badge"></span></div>
-      <div class="report-meta"><span id="report-time"></span><span id="report-code"></span><span id="report-serial"></span></div>
-      <p id="matching-note" class="notice" hidden></p>
-      <div class="spec-grid" id="spec-grid"></div>
-      <div class="checks-layout"><div><h3>Reported status</h3><div id="checks"></div></div><aside class="limits"><h3>What still needs a human check</h3><ul><li>Match the report’s serial ending to the Mac at handover.</li><li>Confirm any organization has released the Mac.</li><li>Agree how to check erasure, online activation and setup before payment.</li><li>Check physical condition and the hardware functions that matter to you.</li></ul><p>No pass badge is issued. Unknown values remain unknown.</p></aside></div>
-      <details><summary>Review the shareable JSON</summary><pre id="raw-report"></pre></details>
-    </section>
-    <section class="faq"><h2>A few things to know.</h2><details><summary>Can a website check MDM or Activation Lock by itself?</summary><p>No. An ordinary web page cannot read these Mac system settings. The downloadable script reads the Mac locally; this page explains the result.</p></details><details><summary>Does “not enrolled” guarantee the Mac is clear forever?</summary><p>No. This is the local status at collection time. Organization assignment, ownership, a possible bypass and behavior after a reset require separate evidence. A report can also be edited by its sender.</p></details><details><summary>Does this replace testing at pickup?</summary><p>It can reduce uncertainty and help plan a shorter meetup. It does not replace the checks you agree with the seller. The collector never erases the Mac or changes any security setting.</p></details><details><summary>Where does my information go?</summary><p>The page has no report-upload endpoint, analytics or third-party scripts. Imported reports stay in this tab. You can explicitly download a reviewed file and share it through your own conversation.</p></details></section>
-    <footer><span class="brand">Mac Check</span><p>Useful evidence. Clear limits. A simpler handover.</p><div><a href="https://support.apple.com/102773" target="_blank" rel="noopener">Apple’s handover guide ↗</a><a href="https://support.apple.com/guide/deployment/dep1d89f0bff/web" target="_blank" rel="noopener">About device management ↗</a></div></footer>
-  </main>
-</body>
-</html>
+<header><a class="brand" href="./"><span class="mark">M<span>✓</span></span> Mac Check</a><a class="source" href="https://github.com/therealtimex/mac-check">View source ↗</a></header>
+<main>
+<div class="mac" aria-hidden="true"><i></i><span></span></div>
+<p class="eyebrow">A QUICK CHECK BEFORE THE HANDOVER</p>
+<h1>Check your Mac.<br><span>Share one screenshot.</span></h1>
+<p class="intro">Specs, enrollment and Activation Lock in one clear report.<br>No account. No installation. Nothing uploaded.</p>
+<a class="download" id="download" href="mac-check.zip?v=quick-2" download="mac-check.zip">Download for Mac <span>↓</span></a>
+<p class="download-note">A small ZIP with one readable checker.</p>
+<ol class="steps"><li><b>1</b><span>Open the download<small>Unzip, then open Mac Check.command.</small></span></li><li><b>2</b><span>Press Return<small>Terminal opens and runs the check.</small></span></li><li><b>3</b><span>Share the screenshot<small>Your report opens automatically.</small></span></li></ol>
+<section class="next" id="next" hidden aria-live="polite"><h2>Open your download.</h2><p>Open <strong>mac-check.zip</strong>, then double-click <strong>Mac Check.command</strong>. In Terminal, press <strong>Return</strong>. Your report will open in your browser.</p><p class="hint">macOS may ask you to confirm opening the file. The website itself cannot launch Terminal.</p></section>
+<a class="example" href="example.html?v=quick-2">See an example report ↗</a>
+<details class="advanced"><summary>Need another way?</summary><div><p>After unzipping, open Terminal and paste:</p><div class="command"><code>zsh ~/Downloads/'Mac Check.command'</code><button id="copy-command" type="button">Copy</button></div><p id="copy-status" role="status"></p><p class="hint">Or drag the unzipped file into Terminal after typing <code>zsh </code>, then press Return.</p><hr><label for="legacy-file">Already have a JSON report?</label><input id="legacy-file" type="file" accept=".json,application/json"><p id="legacy-status" role="status"></p><a id="legacy-open" target="_blank" rel="noopener" hidden>Open your report ↗</a></div></details>
+<p class="privacy">Read-only checks. Only the last four serial characters appear.<br>A local report is evidence; it does not certify ownership or test a factory reset.</p>
+</main>
+<footer><span>Made for a simpler handover.</span><a href="https://github.com/therealtimex/mac-check/blob/main/src/collector.command">Read the checker</a></footer>
+</body></html>
